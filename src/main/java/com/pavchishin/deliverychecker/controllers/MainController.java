@@ -39,13 +39,11 @@ public class MainController {
         return "load-excel";
     }
 
-    @PostMapping("/load-excel")
-    public String loadExcel(@RequestParam("file") MultipartFile file, ModelMap modelMap){
-
-        modelMap.addAttribute("file", file);
-        service.save(file);
-        System.out.println(file.getOriginalFilename());
-        return "redirect:/list-files";
-    }
+//    @PostMapping("/load-excel")
+//    public String loadExcel(@RequestParam("file") MultipartFile file, ModelMap modelMap){
+//        modelMap.addAttribute("file", file);
+//        service.save(file);
+//        return "redirect:/list-files";
+//    }
 
 }

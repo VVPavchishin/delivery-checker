@@ -14,8 +14,8 @@
                 <a class="nav-link" href="/load-excel">Load files</a>
             </li>
         </ul>
-        <form class="form-inline">
-            <button class="btn btn-lg btn-outline-success my-2 my-sm-0" type="submit">REFRESH</button>
+        <form class="form-inline" method="post" enctype="multipart/form-data">
+            <button class="btn btn-lg btn-outline-success my-2 my-sm-0" name="refresh" type="submit">REFRESH</button>
         </form>
     </div>
 </nav>

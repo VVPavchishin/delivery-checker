@@ -19,7 +19,7 @@ public class ExcelService {
 
     public void save(MultipartFile file) {
         try {
-            List<TuFiles> tuFiles = ExcelHelper.showFiles(file.getInputStream());
+            List<TuFiles> tuFiles = ExcelHelper.showFiles(file.getInputStream(), file);
             tuFilesRepository.saveAll(tuFiles);
         } catch (IOException e) {
             throw new RuntimeException("fail to store excel data: " + e.getMessage());
