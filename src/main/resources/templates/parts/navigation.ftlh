@@ -7,14 +7,8 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/list-files">TU Files</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/load-excel">Load files</a>
-            </li>
         </ul>
-        <form class="form-inline" method="post" enctype="multipart/form-data">
+        <form class="form-inline" method="post" enctype="multipart/form-data" action="/refresh">
             <button class="btn btn-lg btn-outline-success my-2 my-sm-0" name="refresh" type="submit">REFRESH</button>
         </form>
     </div>
