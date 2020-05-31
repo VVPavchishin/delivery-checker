@@ -6,7 +6,6 @@ import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +20,10 @@ import java.util.Objects;
 
 @Controller
 public class RefreshController {
-    public static String PATH_FOLDER =
+    public static String PATH_TU_FOLDER =
             "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TUTest";
-
+    public static String PATH_GDN_FOLDER =
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDN";
     @Autowired
     private ExcelService service;
 
@@ -38,20 +38,27 @@ public class RefreshController {
     public String refreshList(Map<String, Object> model) throws IOException {
         service.deleteAll();
 
-        final File folder = new File(PATH_FOLDER);
-        File [] listFiles = folder.listFiles();
-        List<MultipartFile> multipartFileList = new ArrayList<>();
+        List<MultipartFile> multipartTuFile = getListMultipartFiles(PATH_TU_FOLDER);
+        List<MultipartFile> multipartGdnFile = getListMultipartFiles(PATH_GDN_FOLDER);
 
+        model.put("files", multipartTuFile);
+        service.saveTuFiles(multipartTuFile);
+        service.saveGdnFiles(multipartGdnFile);
+
+        return "redirect:/";
+    }
+
+    private List<MultipartFile> getListMultipartFiles(String pathTuFolder) throws IOException {
+        List<MultipartFile> multipartFiles = new ArrayList<>();
+        final File folder = new File(pathTuFolder);
+        File [] listFiles = folder.listFiles();
         for (File fl : Objects.requireNonNull(listFiles)) {
-            File file = new File(PATH_FOLDER + "/" + fl.getName());
+            File file = new File(pathTuFolder + "/" + fl.getName());
             FileInputStream input = new FileInputStream(file);
             MultipartFile multipartFile = new MockMultipartFile("file",
                     file.getName(), "text/plain", IOUtils.toByteArray(input));
-            multipartFileList.add(multipartFile);
+            multipartFiles.add(multipartFile);
         }
-
-        model.put("files", multipartFileList);
-        service.saveAll(multipartFileList);
-        return "redirect:/";
+        return multipartFiles;
     }
 }

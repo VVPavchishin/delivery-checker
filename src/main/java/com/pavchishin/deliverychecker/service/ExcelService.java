@@ -1,7 +1,9 @@
 package com.pavchishin.deliverychecker.service;
 
 import com.pavchishin.deliverychecker.helper.ExcelHelper;
+import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
+import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,9 +19,12 @@ public class ExcelService {
     @Autowired
     private TuFilesRepository tuFilesRepository;
 
+    @Autowired
+    private GdnFilesRepository gdnFilesRepository;
+
     public void save(MultipartFile file) {
         try {
-            List<TuFiles> tuFiles = ExcelHelper.showFiles(file);
+            List<TuFiles> tuFiles = ExcelHelper.showTuFiles(file);
             tuFilesRepository.saveAll(tuFiles);
         } catch (IOException e) {
             throw new RuntimeException("fail to store excel data: " + e.getMessage());
@@ -29,15 +34,25 @@ public class ExcelService {
     public List<TuFiles> getAllTuFiles() {
         return tuFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "fileTuName"));
     }
+    public List<GdnFiles> getAllGdnFiles() {
+        return gdnFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "tuFiles"));
+    }
 
-    public void saveAll(List<MultipartFile> files) throws IOException {
+    public void saveTuFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<TuFiles> tUFiles = ExcelHelper.showFiles(myFile);
+            List<TuFiles> tUFiles = ExcelHelper.showTuFiles(myFile);
             tuFilesRepository.saveAll(tUFiles);
+        }
+    }
+    public void saveGdnFiles(List<MultipartFile> files) throws IOException {
+        for (MultipartFile myFile : files) {
+            List<GdnFiles> gdnFiles = ExcelHelper.showGdnFiles(myFile);
+            gdnFilesRepository.saveAll(gdnFiles);
         }
     }
     public void  deleteAll(){
         tuFilesRepository.deleteAll();
+        gdnFilesRepository.deleteAll();
     }
 
 

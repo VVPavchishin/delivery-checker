@@ -1,5 +1,6 @@
 package com.pavchishin.deliverychecker.helper;
 
+import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -7,14 +8,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class ExcelHelper {
-    public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     public static String STATUS_ACTIVE = "ACTIVE";
+    public static String STATUS_PASSIVE = "PASSIVE";
 
-    public static List<TuFiles> showFiles(MultipartFile file) throws IOException {
+    public static List<TuFiles> showTuFiles(MultipartFile file) throws IOException {
 
         List<TuFiles> tuFiles = new ArrayList<TuFiles>();
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -27,18 +29,35 @@ public class ExcelHelper {
 
         TuFiles files = new TuFiles();
         String orName = file.getOriginalFilename();
-        System.out.print(orName + " >>> ");
         files.setOriginalTuName(orName);
         files.setFileTuName(fileName);
-        System.out.print(fileName + " >>> ");
         files.setFileTuDate(fileDate);
-        System.out.print(fileDate + " >>> ");
         files.setFileTuPrice(filePrice);
-        System.out.print(filePrice + " >>> ");
         files.setStatus(STATUS_ACTIVE);
-        System.out.println(STATUS_ACTIVE);
-
         tuFiles.add(files);
+
         return tuFiles;
+    }
+
+    public static List<GdnFiles> showGdnFiles(MultipartFile file) throws IOException {
+        List<GdnFiles> gdnFiles = new ArrayList<GdnFiles>();
+
+        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+
+        String orGdnName = file.getOriginalFilename();
+        String fileGdnName = sheet.getRow(15).getCell(4).getStringCellValue();
+        Date fileGdnDate = sheet.getRow(16).getCell(4).getDateCellValue();
+        int rowQuantity = sheet.getLastRowNum();
+        double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
+        String fileTuName = sheet.getRow(11).getCell(2).getStringCellValue();
+
+        GdnFiles fileGdn = new GdnFiles();
+        fileGdn.setOriginalGdnName(orGdnName);
+        fileGdn.setFileGdnName(fileGdnName);
+        fileGdn.setFileGdnDate(fileGdnDate);
+        fileGdn.setFileGdnPrice(fileGdnPrice);
+//        fileGdn.setTuFiles();!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        return gdnFiles;
     }
 }

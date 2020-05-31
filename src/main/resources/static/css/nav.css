@@ -25,3 +25,6 @@ html, body{
     font-size: 25px;
     padding-left: 20px;
 }
+#card-body {
+    border-radius: 15px;
+}

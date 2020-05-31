@@ -1,10 +1,8 @@
 package com.pavchishin.deliverychecker.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class TuFiles {
@@ -17,6 +15,9 @@ public class TuFiles {
     private Date fileTuDate;
     private double fileTuPrice;
     private String status;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tuFiles")
+    private Set<GdnFiles> gdnFiles;
 
     public TuFiles() {}
 
@@ -72,8 +73,15 @@ public class TuFiles {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Set<GdnFiles> getGdnFiles() {
+        return gdnFiles;
+    }
+
+    public void setGdnFiles(Set<GdnFiles> gdnFiles) {
+        this.gdnFiles = gdnFiles;
     }
 }
