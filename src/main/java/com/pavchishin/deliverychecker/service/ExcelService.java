@@ -38,7 +38,7 @@ public class ExcelService {
         return tuFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "fileTuName"));
     }
     public List<GdnFiles> getAllGdnFiles() {
-        return gdnFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "tuFiles"));
+        return gdnFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "fileGdnName"));
     }
 
     public void saveTuFiles(List<MultipartFile> files) throws IOException {

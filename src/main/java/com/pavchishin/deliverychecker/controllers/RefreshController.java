@@ -1,5 +1,6 @@
 package com.pavchishin.deliverychecker.controllers;
 
+import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
 import com.pavchishin.deliverychecker.service.ExcelService;
 import org.apache.poi.util.IOUtils;
@@ -30,7 +31,9 @@ public class RefreshController {
     @GetMapping("/")
     public String showTuFiles(Map<String, Object> model){
         List<TuFiles> tuFilesList = service.getAllTuFiles();
-        model.put("files", tuFilesList);
+        List<GdnFiles> gdnFilesList = service.getAllGdnFiles();
+        model.put("filesTu", tuFilesList);
+        model.put("filesGdn", gdnFilesList);
         return "index";
     }
 
@@ -41,7 +44,8 @@ public class RefreshController {
         List<MultipartFile> multipartTuFile = getListMultipartFiles(PATH_TU_FOLDER);
         List<MultipartFile> multipartGdnFile = getListMultipartFiles(PATH_GDN_FOLDER);
 
-        model.put("files", multipartTuFile);
+        model.put("filesTu", multipartTuFile);
+        model.put("filesGdn", multipartGdnFile);
         service.saveTuFiles(multipartTuFile);
         service.saveGdnFiles(multipartGdnFile);
 
