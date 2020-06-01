@@ -16,17 +16,21 @@ public class GdnFiles {
     private double fileGdnPrice;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tu_files_id", nullable = false)
-    private TuFiles tuFiles;
+    @JoinColumn(name = "tu_files_id")
+    private TuFiles tuFile;
 
     public GdnFiles() {}
 
-    public GdnFiles(String originalGdnName, String fileGdnName, Date fileGdnDate, double fileGdnPrice, TuFiles tuFiles) {
+    public GdnFiles(String originalGdnName, String fileGdnName, Date fileGdnDate, double fileGdnPrice, TuFiles tuFile) {
         this.originalGdnName = originalGdnName;
         this.fileGdnName = fileGdnName;
         this.fileGdnDate = fileGdnDate;
         this.fileGdnPrice = fileGdnPrice;
-        this.tuFiles = tuFiles;
+        this.tuFile = tuFile;
+    }
+
+    public String getTuFiles(){
+        return tuFile != null ? tuFile.getFileTuName() : "...";
     }
 
     public long getId() {
@@ -69,11 +73,11 @@ public class GdnFiles {
         this.fileGdnPrice = fileGdnPrice;
     }
 
-    public TuFiles getTuFiles() {
-        return tuFiles;
+    public TuFiles getTuFile() {
+        return tuFile;
     }
 
-    public void setTuFiles(TuFiles tuFiles) {
-        this.tuFiles = tuFiles;
+    public void setTuFile(TuFiles tuFile) {
+        this.tuFile = tuFile;
     }
 }

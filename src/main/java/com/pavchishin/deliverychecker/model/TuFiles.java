@@ -16,7 +16,7 @@ public class TuFiles {
     private double fileTuPrice;
     private String status;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tuFiles")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tuFile")
     private Set<GdnFiles> gdnFiles;
 
     public TuFiles() {}

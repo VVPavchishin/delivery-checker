@@ -2,8 +2,12 @@ package com.pavchishin.deliverychecker.helper;
 
 import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
+import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
+import com.pavchishin.deliverychecker.repository.TuFilesRepository;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -11,12 +15,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class ExcelHelper {
     public static String STATUS_ACTIVE = "ACTIVE";
     public static String STATUS_PASSIVE = "PASSIVE";
 
-    public static List<TuFiles> showTuFiles(MultipartFile file) throws IOException {
+    @Autowired
+    private TuFilesRepository tuFilesRepository;
+
+    @Autowired
+    private GdnFilesRepository gdnFilesRepository;
+
+
+    public List<TuFiles> showTuFiles(MultipartFile file) throws IOException {
 
         List<TuFiles> tuFiles = new ArrayList<TuFiles>();
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -34,12 +45,13 @@ public class ExcelHelper {
         files.setFileTuDate(fileDate);
         files.setFileTuPrice(filePrice);
         files.setStatus(STATUS_ACTIVE);
+
         tuFiles.add(files);
 
         return tuFiles;
     }
 
-    public static List<GdnFiles> showGdnFiles(MultipartFile file) throws IOException {
+    public List<GdnFiles> showGdnFiles(MultipartFile file) throws IOException {
         List<GdnFiles> gdnFiles = new ArrayList<GdnFiles>();
 
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -57,7 +69,8 @@ public class ExcelHelper {
         fileGdn.setFileGdnName(fileGdnName);
         fileGdn.setFileGdnDate(fileGdnDate);
         fileGdn.setFileGdnPrice(fileGdnPrice);
-//        fileGdn.setTuFiles();!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        fileGdn.setTuFile(tuFilesRepository.findByFileTuName(fileTuName));
+        gdnFiles.add(fileGdn);
         return gdnFiles;
     }
 }

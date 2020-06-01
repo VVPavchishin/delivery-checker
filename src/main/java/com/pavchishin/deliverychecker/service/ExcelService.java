@@ -22,12 +22,15 @@ public class ExcelService {
     @Autowired
     private GdnFilesRepository gdnFilesRepository;
 
+    @Autowired
+    private ExcelHelper helper;
+
     public void save(MultipartFile file) {
         try {
-            List<TuFiles> tuFiles = ExcelHelper.showTuFiles(file);
+            List<TuFiles> tuFiles = helper.showTuFiles(file);
             tuFilesRepository.saveAll(tuFiles);
         } catch (IOException e) {
-            throw new RuntimeException("fail to store excel data: " + e.getMessage());
+            throw new RuntimeException("Fail to store excel data: " + e.getMessage());
         }
     }
 
@@ -40,13 +43,13 @@ public class ExcelService {
 
     public void saveTuFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<TuFiles> tUFiles = ExcelHelper.showTuFiles(myFile);
+            List<TuFiles> tUFiles = helper.showTuFiles(myFile);
             tuFilesRepository.saveAll(tUFiles);
         }
     }
     public void saveGdnFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<GdnFiles> gdnFiles = ExcelHelper.showGdnFiles(myFile);
+            List<GdnFiles> gdnFiles = helper.showGdnFiles(myFile);
             gdnFilesRepository.saveAll(gdnFiles);
         }
     }
