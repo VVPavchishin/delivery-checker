@@ -22,9 +22,9 @@ import java.util.Objects;
 @Controller
 public class RefreshController {
     public static String PATH_TU_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TUTest";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TU";
     public static String PATH_GDN_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDNTest";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDN";
     @Autowired
     private ExcelService service;
 
@@ -32,6 +32,7 @@ public class RefreshController {
     public String showTuFiles(Map<String, Object> model){
         List<TuFiles> tuFilesList = service.getAllTuFiles();
         List<GdnFiles> gdnFilesList = service.getAllGdnFiles();
+
         model.put("filesTu", tuFilesList);
         model.put("filesGdn", gdnFilesList);
         return "index";

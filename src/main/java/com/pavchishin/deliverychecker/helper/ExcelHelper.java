@@ -2,34 +2,31 @@ package com.pavchishin.deliverychecker.helper;
 
 import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
-import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 @Service
 public class ExcelHelper {
     public static String STATUS_ACTIVE = "ACTIVE";
-    public static String STATUS_PASSIVE = "PASSIVE";
+    //public static String STATUS_PASSIVE = "PASSIVE";
 
-    @Autowired
-    private TuFilesRepository tuFilesRepository;
+    private final TuFilesRepository tuFilesRepository;
 
-    @Autowired
-    private GdnFilesRepository gdnFilesRepository;
+    public ExcelHelper(TuFilesRepository tuFilesRepository) {
+        this.tuFilesRepository = tuFilesRepository;
+    }
 
 
     public List<TuFiles> showTuFiles(MultipartFile file) throws IOException {
 
-        List<TuFiles> tuFiles = new ArrayList<TuFiles>();
+        List<TuFiles> tuFiles = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
 
@@ -52,7 +49,7 @@ public class ExcelHelper {
     }
 
     public List<GdnFiles> showGdnFiles(MultipartFile file) throws IOException {
-        List<GdnFiles> gdnFiles = new ArrayList<GdnFiles>();
+        List<GdnFiles> gdnFiles = new ArrayList<>();
 
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
