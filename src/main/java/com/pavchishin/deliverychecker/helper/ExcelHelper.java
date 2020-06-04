@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class ExcelHelper {
     public static String STATUS_ACTIVE = "ACTIVE";
-    //public static String STATUS_PASSIVE = "PASSIVE";
+    //public static String STATUS_PASSIVE = "DISACTIVE";
 
     private final TuFilesRepository tuFilesRepository;
 

@@ -28,3 +28,19 @@ html, body{
 #card-body {
     border-radius: 15px;
 }
+.card {
+    border: none;
+    border-radius: 15px;
+}
+hr { display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+.alert {
+    border-radius: 15px;
+    border-color: red black;
+    border: 5px;
+}
