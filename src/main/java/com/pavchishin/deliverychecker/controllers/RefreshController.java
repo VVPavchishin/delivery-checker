@@ -4,7 +4,6 @@ import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
 import com.pavchishin.deliverychecker.service.ExcelService;
 import org.apache.poi.util.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +20,15 @@ import java.util.Objects;
 
 @Controller
 public class RefreshController {
-    public static String PATH_TU_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TU";
-    public static String PATH_GDN_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDN";
-    @Autowired
-    private ExcelService service;
+    public final static String PATH_TU_FOLDER =
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TUTest";
+    public final static String PATH_GDN_FOLDER =
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDNTest";
+    private final ExcelService service;
+
+    public RefreshController(ExcelService service) {
+        this.service = service;
+    }
 
     @GetMapping("/")
     public String showTuFiles(Map<String, Object> model){

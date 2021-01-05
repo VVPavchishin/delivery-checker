@@ -5,7 +5,6 @@ import com.pavchishin.deliverychecker.model.GdnFiles;
 import com.pavchishin.deliverychecker.model.TuFiles;
 import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,14 +15,17 @@ import java.util.List;
 @Service
 public class ExcelService {
 
-    @Autowired
-    private TuFilesRepository tuFilesRepository;
+    private final TuFilesRepository tuFilesRepository;
 
-    @Autowired
-    private GdnFilesRepository gdnFilesRepository;
+    private final GdnFilesRepository gdnFilesRepository;
 
-    @Autowired
-    private ExcelHelper helper;
+    private final ExcelHelper helper;
+
+    public ExcelService(TuFilesRepository tuFilesRepository, GdnFilesRepository gdnFilesRepository, ExcelHelper helper) {
+        this.tuFilesRepository = tuFilesRepository;
+        this.gdnFilesRepository = gdnFilesRepository;
+        this.helper = helper;
+    }
 
     public void save(MultipartFile file) {
         try {
