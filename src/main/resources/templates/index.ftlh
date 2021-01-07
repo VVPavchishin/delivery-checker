@@ -20,25 +20,15 @@
             <#list filesTu as tFile>
                 <div class="container mb-3 ml-10" style="width: 45rem; height: 18rem;">
                     <#list tFile.getGdnFiles() as gf>
-                    <div class="card">
-                        <div id="card-body" class="card-body mb-2 text-white bg-dark">
-                            <h6 class="card-title text-left" style="font-weight:bold;">${gf.getFileGdnName()}</h6>
-                            <form class="form-horizontal custom-form" role="form">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                    <a class="card-text" style="font-weight:bold;">${gf.fileGdnPrice?string(",##0.00;; roundingMode=halfEven")} UAN</a>
-                                            </div>
-                                            <div class="col-md-6">
-                                                    <a class="card-text">${gf.fileGdnDate?date}</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="card">
+                            <div id="card-body" class="card-body mb-2 text-white bg-dark">
+                                <div class="row">
+                                    <div class="col-6 col-md-4" style="font-weight:bold;">${gf.getFileGdnName()}</div>
+                                    <div class="col-6 col-md-4">${gf.fileGdnDate?date}</div>
+                                    <div class="col-6 col-md-4" style="font-weight:bold; text-align: right">${gf.fileGdnPrice?string(",##0.00;; roundingMode=halfEven")} UAN</div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
                     </#list>
                 </div>
             </#list>

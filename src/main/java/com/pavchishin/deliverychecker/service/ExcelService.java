@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,28 +22,27 @@ public class ExcelService {
 
     private final ExcelHelper helper;
 
-    public ExcelService(TuFilesRepository tuFilesRepository, GdnFilesRepository gdnFilesRepository, ExcelHelper helper) {
+    public ExcelService(TuFilesRepository tuFilesRepository,
+                        GdnFilesRepository gdnFilesRepository,
+                        ExcelHelper helper) {
         this.tuFilesRepository = tuFilesRepository;
         this.gdnFilesRepository = gdnFilesRepository;
         this.helper = helper;
     }
-
-    public void save(MultipartFile file) {
-        try {
-            List<TuFiles> tuFiles = helper.showTuFiles(file);
-            tuFilesRepository.saveAll(tuFiles);
-        } catch (IOException e) {
-            throw new RuntimeException("Fail to store excel data: " + e.getMessage());
-        }
-    }
-
     public List<TuFiles> getAllTuFiles() {
         return tuFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "fileTuName"));
     }
     public List<GdnFiles> getAllGdnFiles() {
         return gdnFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "fileGdnName"));
     }
-    
+    public List<String> getAllTuFilesName(){
+        List<TuFiles> tuFiles = tuFilesRepository.findAll();
+        List<String> nameList = new ArrayList<>();
+        for (TuFiles files : tuFiles) {
+            nameList.add(files.getFileTuName());
+        }
+        return nameList;
+    }
     public void saveTuFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
             List<TuFiles> tUFiles = helper.showTuFiles(myFile);
@@ -59,6 +59,4 @@ public class ExcelService {
         tuFilesRepository.deleteAll();
         gdnFilesRepository.deleteAll();
     }
-
-
 }
