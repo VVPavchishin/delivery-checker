@@ -2,9 +2,11 @@ package com.pavchishin.deliverychecker.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-public class GdnFiles {
+public class GdnFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,16 +19,21 @@ public class GdnFiles {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tu_files_id")
-    private TuFiles tuFile;
+    private TuFile tuFile;
 
-    public GdnFiles() {}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gdnFile")
+    private Set<SparePart> partSet;
 
-    public GdnFiles(String originalGdnName, String fileGdnName, Date fileGdnDate, double fileGdnPrice, TuFiles tuFile) {
+    public GdnFile() {}
+
+    public GdnFile(String originalGdnName, String fileGdnName, Date fileGdnDate, double fileGdnPrice, TuFile tuFile,
+                   Set<SparePart> partSet) {
         this.originalGdnName = originalGdnName;
         this.fileGdnName = fileGdnName;
         this.fileGdnDate = fileGdnDate;
         this.fileGdnPrice = fileGdnPrice;
         this.tuFile = tuFile;
+        this.partSet = partSet;
     }
 
     public String getTuFiles(){
@@ -73,11 +80,42 @@ public class GdnFiles {
         this.fileGdnPrice = fileGdnPrice;
     }
 
-    public TuFiles getTuFile() {
+    public TuFile getTuFile() {
         return tuFile;
     }
 
-    public void setTuFile(TuFiles tuFile) {
+    public void setTuFile(TuFile tuFile) {
         this.tuFile = tuFile;
+    }
+
+    public Set<SparePart> getPartSet() {
+        return partSet;
+    }
+
+    public void setPartSet(Set<SparePart> partSet) {
+        this.partSet = partSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GdnFile gdnFile = (GdnFile) o;
+        return Objects.equals(fileGdnName, gdnFile.fileGdnName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileGdnName);
+    }
+
+    @Override
+    public String toString() {
+        return "GdnFile{" +
+                "fileGdnName='" + fileGdnName + '\'' +
+                ", fileGdnDate=" + fileGdnDate +
+                ", fileGdnPrice=" + fileGdnPrice +
+                ", tuFile=" + tuFile +
+                '}';
     }
 }

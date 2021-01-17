@@ -2,10 +2,11 @@ package com.pavchishin.deliverychecker.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class TuFiles {
+public class TuFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,12 +18,15 @@ public class TuFiles {
     private String status;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "tuFile")
-    private Set<GdnFiles> gdnFiles;
+    private Set<GdnFile> gdnFiles;
 
-    public TuFiles() {}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tuFile")
+    private Set<SparePart> partSet;
 
-    public TuFiles(String originalTuName, String fileTuName,
-                   Date fileTuDate, double fileTuPrice, String status) {
+    public TuFile() {}
+
+    public TuFile(String originalTuName, String fileTuName,
+                  Date fileTuDate, double fileTuPrice, String status) {
         this.originalTuName = originalTuName;
         this.fileTuName = fileTuName;
         this.fileTuDate = fileTuDate;
@@ -77,11 +81,43 @@ public class TuFiles {
         this.status = status;
     }
 
-    public Set<GdnFiles> getGdnFiles() {
+    public Set<GdnFile> getGdnFiles() {
         return gdnFiles;
     }
 
-    public void setGdnFiles(Set<GdnFiles> gdnFiles) {
+    public void setGdnFiles(Set<GdnFile> gdnFiles) {
         this.gdnFiles = gdnFiles;
+    }
+
+    public Set<SparePart> getPartSet() {
+        return partSet;
+    }
+
+    public void setPartSet(Set<SparePart> partSet) {
+        this.partSet = partSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TuFile tuFile = (TuFile) o;
+        return fileTuName.equals(tuFile.fileTuName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileTuName);
+    }
+
+    @Override
+    public String toString() {
+        return "TuFile{" +
+                "originalTuName='" + originalTuName + '\'' +
+                ", fileTuName='" + fileTuName + '\'' +
+                ", fileTuDate=" + fileTuDate +
+                ", fileTuPrice=" + fileTuPrice +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

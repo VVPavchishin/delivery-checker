@@ -1,7 +1,7 @@
 package com.pavchishin.deliverychecker.controllers;
 
-import com.pavchishin.deliverychecker.model.GdnFiles;
-import com.pavchishin.deliverychecker.model.TuFiles;
+import com.pavchishin.deliverychecker.model.GdnFile;
+import com.pavchishin.deliverychecker.model.TuFile;
 import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
 import com.pavchishin.deliverychecker.service.ExcelService;
@@ -23,9 +23,9 @@ import java.util.Objects;
 @Controller
 public class RefreshController {
     public final static String PATH_TU_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TU";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TUTest";
     public final static String PATH_GDN_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDN";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDNTest";
     private final ExcelService service;
     private final TuFilesRepository tuFilesRepository;
     private final GdnFilesRepository gdnFilesRepository;
@@ -40,11 +40,11 @@ public class RefreshController {
 
     @GetMapping("/")
     public String showTuFiles(Map<String, Object> model){
-        List<TuFiles> tuFilesList = service.getAllTuFiles();
-        List<GdnFiles> gdnFilesList = service.getAllGdnFiles();
+        List<TuFile> tuFileList = service.getAllTuFiles();
+        List<GdnFile> gdnFileList = service.getAllGdnFiles();
 
-        model.put("filesTu", tuFilesList);
-        model.put("filesGdn", gdnFilesList);
+        model.put("filesTu", tuFileList);
+        model.put("filesGdn", gdnFileList);
         return "index";
     }
 
@@ -53,19 +53,19 @@ public class RefreshController {
 
         final File tuFolder = new File(PATH_TU_FOLDER);
         File [] listTuFiles = tuFolder.listFiles();
-        List<TuFiles> filesTuList = tuFilesRepository.findAll();
+        List<TuFile> filesTuList = tuFilesRepository.findAll();
         List<String> baseTuList = new ArrayList<>();
-        for (TuFiles tuFiles : filesTuList) {
-            baseTuList.add(tuFiles.getOriginalTuName());
+        for (TuFile tuFile : filesTuList) {
+            baseTuList.add(tuFile.getOriginalTuName());
         }
         List<String> filesTuNames = deleteDuplicate(Objects.requireNonNull(listTuFiles), baseTuList);
 
         final File gdnFolder = new File(PATH_GDN_FOLDER);
         File [] listGdnFiles = gdnFolder.listFiles();
-        List<GdnFiles> filesGdnList = gdnFilesRepository.findAll();
+        List<GdnFile> filesGdnList = gdnFilesRepository.findAll();
         List<String> baseGdnList = new ArrayList<>();
-        for (GdnFiles gdnFiles : filesGdnList) {
-            baseGdnList.add(gdnFiles.getOriginalGdnName());
+        for (GdnFile gdnFile : filesGdnList) {
+            baseGdnList.add(gdnFile.getOriginalGdnName());
         }
         List<String> filesGdnNames = deleteDuplicate(Objects.requireNonNull(listGdnFiles), baseGdnList);
 
@@ -76,6 +76,7 @@ public class RefreshController {
         model.put("filesTu", multipartTuFile);
         model.put("filesGdn", multipartGdnFile);
         service.saveTuFiles(multipartTuFile);
+        service.saveSparePart(multipartTuFile);
         service.saveGdnFiles(multipartGdnFile);
 
         return "redirect:/";

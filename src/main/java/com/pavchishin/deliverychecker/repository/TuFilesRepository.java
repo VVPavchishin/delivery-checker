@@ -1,10 +1,8 @@
 package com.pavchishin.deliverychecker.repository;
 
-import com.pavchishin.deliverychecker.model.TuFiles;
+import com.pavchishin.deliverychecker.model.TuFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface TuFilesRepository extends JpaRepository<TuFiles, Long> {
-    TuFiles findByFileTuName(String name);
+public interface TuFilesRepository extends JpaRepository<TuFile, Long> {
+    TuFile findByFileTuName(String name);
 }

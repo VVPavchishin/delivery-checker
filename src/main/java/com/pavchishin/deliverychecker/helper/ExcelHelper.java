@@ -1,22 +1,25 @@
 package com.pavchishin.deliverychecker.helper;
 
-import com.pavchishin.deliverychecker.model.GdnFiles;
-import com.pavchishin.deliverychecker.model.TuFiles;
+import com.pavchishin.deliverychecker.model.GdnFile;
+import com.pavchishin.deliverychecker.model.SparePart;
+import com.pavchishin.deliverychecker.model.TuFile;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 @Service
 public class ExcelHelper {
-    public static String STATUS_ACTIVE = "ACTIVE";
-    //public static String STATUS_PASSIVE = "DISACTIVE";
+    public final static String STATUS_ACTIVE = "ACTIVE";
+    //public final static String STATUS_PASSIVE = "DISACTIVE";
 
     private final TuFilesRepository tuFilesRepository;
 
@@ -25,9 +28,9 @@ public class ExcelHelper {
     }
 
 
-    public List<TuFiles> showTuFiles(MultipartFile file) throws IOException {
-
-        List<TuFiles> tuFiles = new ArrayList<>();
+    public List<TuFile> addTuFiles(MultipartFile file) throws IOException {
+        addSparePart(file);
+        List<TuFile> tuFiles = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
 
@@ -36,7 +39,7 @@ public class ExcelHelper {
         int rowQuantity = sheet.getLastRowNum();
         double filePrice = sheet.getRow(rowQuantity - 12).getCell(6).getNumericCellValue();
 
-        TuFiles files = new TuFiles();
+        TuFile files = new TuFile();
         String orName = file.getOriginalFilename();
         files.setOriginalTuName(orName);
         files.setFileTuName(fileName);
@@ -49,8 +52,8 @@ public class ExcelHelper {
         return tuFiles;
     }
 
-    public List<GdnFiles> showGdnFiles(MultipartFile file) throws IOException {
-        List<GdnFiles> gdnFiles = new ArrayList<>();
+    public List<GdnFile> addGdnFiles(MultipartFile file) throws IOException {
+        List<GdnFile> gdnFiles = new ArrayList<>();
 
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
@@ -62,7 +65,7 @@ public class ExcelHelper {
         double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
         String fileTuName = sheet.getRow(11).getCell(2).getStringCellValue();
 
-        GdnFiles fileGdn = new GdnFiles();
+        GdnFile fileGdn = new GdnFile();
         fileGdn.setOriginalGdnName(orGdnName);
         fileGdn.setFileGdnName(fileGdnName);
         fileGdn.setFileGdnDate(fileGdnDate);
@@ -70,5 +73,27 @@ public class ExcelHelper {
         fileGdn.setTuFile(tuFilesRepository.findByFileTuName(fileTuName));
         gdnFiles.add(fileGdn);
         return gdnFiles;
+    }
+
+    public List<SparePart> addSparePart(MultipartFile file) throws IOException{
+        List<SparePart> partList = new ArrayList<>();
+
+        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+        int startRow = sheet.getFirstRowNum() + 14;
+        int lastRow = sheet.getLastRowNum() - 15;
+        String fileName = sheet.getRow(11).getCell(3).getStringCellValue();
+
+        for (int i = startRow; i < lastRow; i++) {
+            String code = sheet.getRow(i).getCell(1).getStringCellValue();
+            String name = sheet.getRow(i).getCell(2).getStringCellValue();
+            int quantity = (int) sheet.getRow(i).getCell(4).getNumericCellValue();
+            double price = sheet.getRow(i).getCell(5).getNumericCellValue();
+
+            SparePart sparePart = new SparePart(code, name, quantity,
+                    price, tuFilesRepository.findByFileTuName(fileName));
+            partList.add(sparePart);
+        }
+        return partList;
     }
 }
