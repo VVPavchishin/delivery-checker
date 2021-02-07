@@ -2,10 +2,10 @@ package com.pavchishin.deliverychecker.service;
 
 import com.pavchishin.deliverychecker.helper.ExcelHelper;
 import com.pavchishin.deliverychecker.model.GdnFile;
-import com.pavchishin.deliverychecker.model.SparePart;
+import com.pavchishin.deliverychecker.model.PartTuFiles;
 import com.pavchishin.deliverychecker.model.TuFile;
 import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
-import com.pavchishin.deliverychecker.repository.SparePartRepository;
+import com.pavchishin.deliverychecker.repository.PartTuRepository;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,15 @@ public class ExcelService {
 
     private final TuFilesRepository tuFilesRepository;
     private final GdnFilesRepository gdnFilesRepository;
-    private final SparePartRepository partRepository;
+    private final PartTuRepository partRepository;
 
     private final ExcelHelper helper;
 
+
     public ExcelService(TuFilesRepository tuFilesRepository,
                         GdnFilesRepository gdnFilesRepository,
-                        SparePartRepository partRepository, ExcelHelper helper) {
+                        PartTuRepository partRepository,
+                        ExcelHelper helper) {
         this.tuFilesRepository = tuFilesRepository;
         this.gdnFilesRepository = gdnFilesRepository;
         this.partRepository = partRepository;
@@ -39,20 +41,26 @@ public class ExcelService {
     }
     public void saveTuFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<TuFile> tUFiles = helper.addTuFiles(myFile);
+            List<? extends TuFile> tUFiles = (List<? extends TuFile>) helper.addAllFiles(myFile, "TU");
             tuFilesRepository.saveAll(tUFiles);
         }
     }
     public void saveGdnFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<GdnFile> gdnFiles = helper.addGdnFiles(myFile);
+            List<? extends GdnFile> gdnFiles = (List<? extends GdnFile>) helper.addAllFiles(myFile, "GDN");
             gdnFilesRepository.saveAll(gdnFiles);
         }
     }
-    public void saveSparePart(List<MultipartFile> files) throws IOException {
-        for (MultipartFile myFile : files){
-            List<SparePart> spareParts = helper.addSparePart(myFile);
-            partRepository.saveAll(spareParts);
-        }
-    }
+//    public void savePartFromTu(List<MultipartFile> files) throws IOException {
+//        for (MultipartFile myFile : files){
+//            List<PartTuFiles> spareParts = helper.addPartTuFile(myFile);
+//            partRepository.saveAll(spareParts);
+//        }
+//    }
+//    public void savePartFromGdn(List<MultipartFile> files) throws IOException {
+//        for (MultipartFile myFile : files){
+//            List<PartTuFiles> spareParts = helper.addPartGdnFile(myFile);
+//            //partRepository.saveAll(spareParts);
+//        }
+//    }
 }

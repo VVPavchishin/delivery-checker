@@ -23,9 +23,9 @@ import java.util.Objects;
 @Controller
 public class RefreshController {
     public final static String PATH_TU_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TUTest";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TuFolder";
     public final static String PATH_GDN_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GDNTest";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GdnFolder";
     private final ExcelService service;
     private final TuFilesRepository tuFilesRepository;
     private final GdnFilesRepository gdnFilesRepository;
@@ -76,7 +76,6 @@ public class RefreshController {
         model.put("filesTu", multipartTuFile);
         model.put("filesGdn", multipartGdnFile);
         service.saveTuFiles(multipartTuFile);
-        service.saveSparePart(multipartTuFile);
         service.saveGdnFiles(multipartGdnFile);
 
         return "redirect:/";

@@ -1,15 +1,13 @@
 package com.pavchishin.deliverychecker.model;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class TuFile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String originalTuName;
     private String fileTuName;
@@ -20,8 +18,9 @@ public class TuFile {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "tuFile")
     private Set<GdnFile> gdnFiles;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tuFile")
-    private Set<SparePart> partSet;
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, mappedBy = "tuFile")
+    private List<PartTuFiles> tuLists;
 
     public TuFile() {}
 
@@ -32,6 +31,14 @@ public class TuFile {
         this.fileTuDate = fileTuDate;
         this.fileTuPrice = fileTuPrice;
         this.status = status;
+    }
+
+    public void setPartTuFile(PartTuFiles partTuFile) {
+        if(tuLists == null) {
+            tuLists = new ArrayList<>();
+        }
+        tuLists.add(partTuFile);
+        partTuFile.setTuFile(this);
     }
 
     public long getId() {
@@ -77,6 +84,7 @@ public class TuFile {
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }
@@ -89,12 +97,12 @@ public class TuFile {
         this.gdnFiles = gdnFiles;
     }
 
-    public Set<SparePart> getPartSet() {
-        return partSet;
+    public List<PartTuFiles> getTuLists() {
+        return tuLists;
     }
 
-    public void setPartSet(Set<SparePart> partSet) {
-        this.partSet = partSet;
+    public void setTuLists(List<PartTuFiles> partTuFilesList) {
+        this.tuLists = partTuFilesList;
     }
 
     @Override
@@ -106,18 +114,20 @@ public class TuFile {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(fileTuName);
-    }
-
-    @Override
     public String toString() {
         return "TuFile{" +
-                "originalTuName='" + originalTuName + '\'' +
+                "id=" + id +
+                ", originalTuName='" + originalTuName + '\'' +
                 ", fileTuName='" + fileTuName + '\'' +
                 ", fileTuDate=" + fileTuDate +
                 ", fileTuPrice=" + fileTuPrice +
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileTuName);
+    }
+
 }

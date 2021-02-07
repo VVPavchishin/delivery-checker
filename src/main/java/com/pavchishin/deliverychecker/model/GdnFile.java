@@ -1,15 +1,13 @@
 package com.pavchishin.deliverychecker.model;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class GdnFile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String originalGdnName;
@@ -21,19 +19,25 @@ public class GdnFile {
     @JoinColumn(name = "tu_files_id")
     private TuFile tuFile;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gdnFile")
-    private Set<SparePart> partSet;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gdnFile", cascade = CascadeType.ALL)
+    private List<PartGdnFiles> partSet;
 
     public GdnFile() {}
 
-    public GdnFile(String originalGdnName, String fileGdnName, Date fileGdnDate, double fileGdnPrice, TuFile tuFile,
-                   Set<SparePart> partSet) {
+    public GdnFile(String originalGdnName, String fileGdnName, Date fileGdnDate, double fileGdnPrice, TuFile tuFile) {
         this.originalGdnName = originalGdnName;
         this.fileGdnName = fileGdnName;
         this.fileGdnDate = fileGdnDate;
         this.fileGdnPrice = fileGdnPrice;
         this.tuFile = tuFile;
         this.partSet = partSet;
+    }
+    public void setPartGdnFile(PartGdnFiles partGdnFile) {
+        if(partSet == null) {
+            partSet = new ArrayList<>();
+        }
+        partSet.add(partGdnFile);
+        partGdnFile.setGdnFile(this);
     }
 
     public String getTuFiles(){
@@ -88,11 +92,11 @@ public class GdnFile {
         this.tuFile = tuFile;
     }
 
-    public Set<SparePart> getPartSet() {
+    public List<PartGdnFiles> getPartSet() {
         return partSet;
     }
 
-    public void setPartSet(Set<SparePart> partSet) {
+    public void setPartSet(List<PartGdnFiles> partSet) {
         this.partSet = partSet;
     }
 
