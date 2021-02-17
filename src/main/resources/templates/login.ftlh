@@ -2,6 +2,5 @@
 <#import "parts/login.ftlh" as lo>
 
 <@co.page>
-    Login page
     <@lo.login "/login" />
 </@co.page>

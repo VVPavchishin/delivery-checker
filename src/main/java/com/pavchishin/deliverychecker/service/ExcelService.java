@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -51,5 +52,10 @@ public class ExcelService {
             List<? extends GdnFile> gdnFiles = (List<? extends GdnFile>) helper.addAllFiles(myFile, "GDN");
             gdnFilesRepository.saveAll(gdnFiles);
         }
+    }
+
+    public List<TuFile> findTuFilesByDate(String date) {
+        List<TuFile> tuFileList = tuFilesRepository.findAllByFileTuDate(date);
+        return tuFileList;
     }
 }

@@ -1,3 +1,4 @@
+<#include "security.ftlh">
 <#macro login path>
     <div class="sidenav">
         <div class="login-main-text">
@@ -18,10 +19,11 @@
                         <input type="password" class="form-control" name="password" placeholder="Password">
                     </div>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <#if path == "/login">
                     <button type="submit" class="btn btn-black">Login</button>
-                    <button type="submit" class="btn btn-secondary"
-                            onclick="window.location.href = '/registration'">Register</button>
-
+                        <#else>
+                    <button type="submit" class="btn btn-black">Register</button>
+                    </#if>
                 </form>
             </div>
         </div>
@@ -29,8 +31,10 @@
 </#macro>
 
 <#macro logout>
+    <#if isAdmin>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <input type="submit" value="Sign out">
+        <button type="submit" class="btn btn-outline-success">Sign out</button>
     </form>
+    </#if>
 </#macro>

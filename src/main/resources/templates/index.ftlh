@@ -1,15 +1,9 @@
 <#import "parts/common.ftlh" as co>
+<#import "parts/leftside.ftlh" as ls>
 <@co.page>
     <div class="container-fluid " style="margin-top: 6.5rem">
         <div class="row">
-            <div class="col-2">
-                <div id="sdn" class="sidenav bg-dark" style="margin-top: 4rem">
-                    <a href="#about">About</a>
-                    <a href="#services">Services</a>
-                    <a href="#clients">Clients</a>
-                    <a href="#contact">Contact</a>
-                </div>
-            </div>
+            <@ls.leftside/>
             <div class="col-5">
                 <#list filesTu as tFile>
                     <div class="card text-right mb-3 ml-5" style="width: 40rem; height: 18rem;">

@@ -14,15 +14,14 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private final PartTuRepository partTuRepository;
     private final UserService service;
 
-    public LoginController(PartTuRepository partTuRepository, UserService service) {
-        this.partTuRepository = partTuRepository;
+    public LoginController(UserService service) {
         this.service = service;
     }
+
     @GetMapping("/registration")
-    public String regPage() {
+    public String registration() {
         return "registration";
     }
 

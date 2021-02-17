@@ -8,6 +8,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -33,17 +34,21 @@ public class RefreshController {
 
     }
 
-    @GetMapping("/")
-    public String showTuFiles(Map<String, Object> model){
+    @GetMapping("/index")
+    public String mainPage(@RequestParam(required = false) String filter, Map<String, Object> model){
         List<TuFile> tuFileList = service.getAllTuFiles();
         List<GdnFile> gdnFileList = service.getAllGdnFiles();
+//        if (filter != null && filter.isEmpty()) {
+//           List<TuFile> tuFiles = service.findTuFilesByDate(filter);
+//            System.out.println(tuFiles);
+//        }
 
         model.put("filesTu", tuFileList);
         model.put("filesGdn", gdnFileList);
         return "/index";
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("index/refresh")
     public String refreshList(Map<String, Object> model) throws IOException {
 
         Set<String> differenceTu;
@@ -90,7 +95,7 @@ public class RefreshController {
             model.put("filesGdn", service.getAllGdnFiles());
         }
 
-        return "redirect:/";
+        return "redirect:/index";
     }
 
     private Set<MultipartFile> getMultipartFiles(Set<String> filesNames, String pathToFiles) throws IOException {

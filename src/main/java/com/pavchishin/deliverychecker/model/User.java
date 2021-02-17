@@ -35,6 +35,10 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public boolean isAdmin(){
+        return roles.contains(Role.ADMIN) || roles.contains(Role.MANAGER) || roles.contains(Role.USER);
+    }
+
     public Long getId() {
         return id;
     }
