@@ -32,15 +32,47 @@ html, body{
     border: none;
     border-radius: 15px;
 }
-hr { display: block;
+hr {
+    display: block;
     height: 1px;
     border: 0;
     border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0;
 }
-.alert {
-    border-radius: 15px;
-    border-color: red black;
-    border: 5px;
+#footer {
+    background-color: #000000;
+}
+#sdn {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #000000;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 80px;
+    text-decoration: none;
+    font-size: 25px;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: white;
+}
+
+.main {
+    margin-left: 250px; /* Same as the width of the sidenav */
+    font-size: 30px; /* Increased text to enable scrolling */
+    padding: 0px 5px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
 }

@@ -41,7 +41,7 @@ public class GdnFile {
     }
 
     public String getTuFiles(){
-        return tuFile != null ? tuFile.getFileTuName() : "...";
+        return tuFile != null ? tuFile.getFileTuName() : "No data to show!";
     }
 
     public long getId() {

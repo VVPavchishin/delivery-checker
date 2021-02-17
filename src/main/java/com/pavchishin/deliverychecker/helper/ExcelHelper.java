@@ -67,7 +67,7 @@ public class ExcelHelper {
                 int rowQuantity = sheet.getLastRowNum();
                 double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
                 String fileTuName = sheet.getRow(11).getCell(2).getStringCellValue();
-
+                System.out.println("fileTuName - " + fileTuName);
 
                 GdnFile fileGdn = new GdnFile(orGdnName, fileGdnName,
                         fileGdnDate, fileGdnPrice, tuFilesRepository.findByFileTuName(fileTuName));

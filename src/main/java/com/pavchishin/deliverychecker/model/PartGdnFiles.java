@@ -103,14 +103,14 @@ public class PartGdnFiles {
     }
 
     @Override
-    public String toString() {
-        return "SparePart{" +
-                "partCode='" + partGdnCode + '\'' +
-                ", partName='" + partGdnName + '\'' +
-                ", partQuantity=" + partGdnQuantity +
-                ", partPrice=" + partGdnPrice +
-                ", partPlace='" + partGdnPlace + '\'' +
-                ", gdnFile=" + gdnFile +
+    public java.lang.String toString() {
+        return "PartGdnFiles{" +
+                "partGdnCode=" + partGdnCode +
+                ", partGdnName=" + partGdnName +
+                ", partGdnQuantity=" + partGdnQuantity +
+                ", partGdnPrice=" + partGdnPrice +
+                ", partGdnPlace=" + partGdnPlace +
+                ", partGdnDos=" + partGdnDos +
                 '}';
     }
 }

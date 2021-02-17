@@ -2,8 +2,6 @@ package com.pavchishin.deliverychecker.controllers;
 
 import com.pavchishin.deliverychecker.model.GdnFile;
 import com.pavchishin.deliverychecker.model.TuFile;
-import com.pavchishin.deliverychecker.repository.GdnFilesRepository;
-import com.pavchishin.deliverychecker.repository.TuFilesRepository;
 import com.pavchishin.deliverychecker.service.ExcelService;
 import org.apache.poi.util.IOUtils;
 import org.springframework.mock.web.MockMultipartFile;
@@ -15,27 +13,24 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class RefreshController {
-    public final static String PATH_TU_FOLDER =
+
+    //@Value("${path.tu.files.folder}")
+    private final String PATH_TU_FOLDER =
             "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TuFolder";
-    public final static String PATH_GDN_FOLDER =
+    //@Value("${path.gdn.files.folder}")
+    private final String PATH_GDN_FOLDER =
             "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GdnFolder";
     private final ExcelService service;
-    private final TuFilesRepository tuFilesRepository;
-    private final GdnFilesRepository gdnFilesRepository;
 
-    public RefreshController(ExcelService service,
-                             TuFilesRepository filesRepository,
-                             GdnFilesRepository gdnFilesRepository) {
+
+    public RefreshController(ExcelService service) {
         this.service = service;
-        this.tuFilesRepository = filesRepository;
-        this.gdnFilesRepository = gdnFilesRepository;
+
     }
 
     @GetMapping("/")
@@ -45,44 +40,61 @@ public class RefreshController {
 
         model.put("filesTu", tuFileList);
         model.put("filesGdn", gdnFileList);
-        return "index";
+        return "/index";
     }
 
     @PostMapping("/refresh")
     public String refreshList(Map<String, Object> model) throws IOException {
 
-        final File tuFolder = new File(PATH_TU_FOLDER);
-        File [] listTuFiles = tuFolder.listFiles();
-        List<TuFile> filesTuList = tuFilesRepository.findAll();
-        List<String> baseTuList = new ArrayList<>();
-        for (TuFile tuFile : filesTuList) {
-            baseTuList.add(tuFile.getOriginalTuName());
+        Set<String> differenceTu;
+        Set<String> differenceGdn;
+        Set<MultipartFile> multipartTuFile;
+        Set<MultipartFile> multipartGdnFile;
+
+        File [] listTuFiles = new File(PATH_TU_FOLDER).listFiles();
+        File [] listGdnFiles = new File(PATH_GDN_FOLDER).listFiles();
+
+        List<TuFile> filesTuList = service.getAllTuFiles();
+        List<GdnFile> filesGdnList = service.getAllGdnFiles();
+
+        Set<String> tuFileNameSetFolder = Arrays.stream(listTuFiles)
+                .map(File::getName).collect(Collectors.toSet());
+        Set<String> tuFileNameSetBase = filesTuList.stream()
+                .map(TuFile::getOriginalTuName).collect(Collectors.toSet());
+
+
+        Set<String> gdnFileNameSetFolder = Arrays.stream(listGdnFiles)
+                .map(File::getName).collect(Collectors.toSet());
+        Set<String> gdnFileNameSetBase = filesGdnList.stream()
+                .map(GdnFile::getOriginalGdnName).collect(Collectors.toSet());
+
+        if (tuFileNameSetFolder.size() > tuFileNameSetBase.size()) {
+            differenceTu = tuFileNameSetFolder.stream()
+                    .filter(el -> !tuFileNameSetBase.contains(el))
+                    .collect(Collectors.toSet());
+            multipartTuFile = getMultipartFiles(differenceTu, PATH_TU_FOLDER);
+            service.saveTuFiles(multipartTuFile);
+            model.put("filesTu", multipartTuFile);
+        } else {
+            model.put("filesTu", service.getAllTuFiles());
         }
-        List<String> filesTuNames = deleteDuplicate(Objects.requireNonNull(listTuFiles), baseTuList);
 
-        final File gdnFolder = new File(PATH_GDN_FOLDER);
-        File [] listGdnFiles = gdnFolder.listFiles();
-        List<GdnFile> filesGdnList = gdnFilesRepository.findAll();
-        List<String> baseGdnList = new ArrayList<>();
-        for (GdnFile gdnFile : filesGdnList) {
-            baseGdnList.add(gdnFile.getOriginalGdnName());
+        if (gdnFileNameSetFolder.size() > gdnFileNameSetBase.size()) {
+            differenceGdn = gdnFileNameSetFolder.stream()
+                    .filter(el -> !gdnFileNameSetBase.contains(el))
+                    .collect(Collectors.toSet());
+            multipartGdnFile = getMultipartFiles(differenceGdn, PATH_GDN_FOLDER);
+            service.saveGdnFiles(multipartGdnFile);
+            model.put("filesGdn", multipartGdnFile);
+        } else {
+            model.put("filesGdn", service.getAllGdnFiles());
         }
-        List<String> filesGdnNames = deleteDuplicate(Objects.requireNonNull(listGdnFiles), baseGdnList);
-
-
-        List<MultipartFile> multipartTuFile = getListMultipartFiles(filesTuNames, PATH_TU_FOLDER);
-        List<MultipartFile> multipartGdnFile = getListMultipartFiles(filesGdnNames, PATH_GDN_FOLDER);
-
-        model.put("filesTu", multipartTuFile);
-        model.put("filesGdn", multipartGdnFile);
-        service.saveTuFiles(multipartTuFile);
-        service.saveGdnFiles(multipartGdnFile);
 
         return "redirect:/";
     }
 
-    private List<MultipartFile> getListMultipartFiles(List<String> filesNames, String pathToFiles) throws IOException {
-        List<MultipartFile> multipartFiles = new ArrayList<>();
+    private Set<MultipartFile> getMultipartFiles(Set<String> filesNames, String pathToFiles) throws IOException {
+        Set<MultipartFile> multipartFiles = new HashSet<>();
 
         for (String fl : Objects.requireNonNull(filesNames)) {
             File file = new File(pathToFiles + "/" + fl);
@@ -92,23 +104,5 @@ public class RefreshController {
             multipartFiles.add(multipartFile);
         }
         return multipartFiles;
-    }
-
-    private List<String> deleteDuplicate(File[] listFiles, List<String> baseList) {
-        List<String> listOut = new ArrayList<>();
-
-        if (listFiles.length > baseList.size()){
-            List<String> folderList = new ArrayList<>();
-            for (File file : listFiles) {
-                folderList.add(file.getName());
-            }
-
-            for (String s : folderList) {
-                if (!baseList.contains(s)) {
-                    listOut.add(s);
-                }
-            }
-        }
-        return listOut;
     }
 }

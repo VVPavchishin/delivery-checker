@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ExcelService {
@@ -39,28 +40,16 @@ public class ExcelService {
     public List<GdnFile> getAllGdnFiles() {
         return gdnFilesRepository.findAll(Sort.by(Sort.Direction.DESC, "fileGdnName"));
     }
-    public void saveTuFiles(List<MultipartFile> files) throws IOException {
+    public void saveTuFiles(Set<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
             List<? extends TuFile> tUFiles = (List<? extends TuFile>) helper.addAllFiles(myFile, "TU");
             tuFilesRepository.saveAll(tUFiles);
         }
     }
-    public void saveGdnFiles(List<MultipartFile> files) throws IOException {
+    public void saveGdnFiles(Set<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
             List<? extends GdnFile> gdnFiles = (List<? extends GdnFile>) helper.addAllFiles(myFile, "GDN");
             gdnFilesRepository.saveAll(gdnFiles);
         }
     }
-//    public void savePartFromTu(List<MultipartFile> files) throws IOException {
-//        for (MultipartFile myFile : files){
-//            List<PartTuFiles> spareParts = helper.addPartTuFile(myFile);
-//            partRepository.saveAll(spareParts);
-//        }
-//    }
-//    public void savePartFromGdn(List<MultipartFile> files) throws IOException {
-//        for (MultipartFile myFile : files){
-//            List<PartTuFiles> spareParts = helper.addPartGdnFile(myFile);
-//            //partRepository.saveAll(spareParts);
-//        }
-//    }
 }
