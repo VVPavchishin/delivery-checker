@@ -9,7 +9,7 @@
     >
 <#else>
     <#assign
-        name = "New user"
+        name = "Registration"
         isAdmin = false
     >
 </#if>

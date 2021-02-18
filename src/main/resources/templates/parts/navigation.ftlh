@@ -16,7 +16,7 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         </#if>
-        <#if name == "New user">
+        <#if name == "Registration">
             <a class="navbar-text" href="/registration" id="uname">${name}</a>
         <#else>
         <div class="navbar-text" id="uname">${name}</div>

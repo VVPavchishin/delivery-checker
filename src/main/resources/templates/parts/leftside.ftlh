@@ -4,7 +4,7 @@
         <a href="/index">Information</a>
         <a href="#services">Services</a>
         <a href="#clients">Clients</a>
-        <a href="#contact">Contact</a>
+        <a href="/user">Users</a>
     </div>
 </div>
 </#macro>
