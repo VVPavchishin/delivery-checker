@@ -38,10 +38,10 @@
                             <td style="text-align: center">
                                 <div class="row">
                                     <div class="col-sm-3 ml-5">
-                                        <a class="btn btn-primary" href="/user/edit/${user.id}">Edit user</a>
+                                        <a class="btn btn-primary" href="/delivery/user/edit/${user.id}">Edit user</a>
                                     </div>
                                     <div class="col-sm-3 ml-5">
-                                        <form method="post" action="user/delete">
+                                        <form method="post" action="/delivery/user/delete">
                                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                                             <button class="btn btn-danger" name="userId" value="${user.id}" type="submit">Delete user</button>
                                         </form>
