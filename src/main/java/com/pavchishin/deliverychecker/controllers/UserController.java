@@ -25,13 +25,13 @@ public class UserController {
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", repository.findAll());
-        return "user_list";
+        return "user-list";
     }
-    @GetMapping("edit/{user}")
+    @GetMapping("/edit/{user}")
     public String userEdit(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
-        return "user_edit";
+        return "user-edit";
 
     }
 

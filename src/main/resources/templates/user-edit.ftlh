@@ -1,9 +1,6 @@
 <#import "parts/common.ftlh" as co>
-<#import "parts/leftside.ftlh" as ls>
 
 <@co.page>
-    <@ls.leftside/>
-
     <div class="container" style="margin-top: 5.5rem; margin-right: 10rem;">
         <h2>User editor</h2>
         <form action="/user/edit" method="post">

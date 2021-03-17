@@ -14,6 +14,7 @@ public class PartTuFiles {
     private int partTuQuantity;
     private double partTuPrice;
     private String partTuDos;
+    private String partTuStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "tu_file_id")
@@ -23,12 +24,13 @@ public class PartTuFiles {
 
     public PartTuFiles(String partCode, String partName,
                        String partTuDos, int partQuantity,
-                       double partPrice) {
+                       double partPrice, String partTuStatus) {
         this.partTuCode = partCode;
         this.partTuName = partName;
         this.partTuQuantity = partQuantity;
         this.partTuPrice = partPrice;
         this.partTuDos = partTuDos;
+        this.partTuStatus = partTuStatus;
     }
 
     public long getId() {
@@ -85,6 +87,14 @@ public class PartTuFiles {
 
     public void setPartTuDos(String partTuDos) {
         this.partTuDos = partTuDos;
+    }
+
+    public String getPartTuStatus() {
+        return partTuStatus;
+    }
+
+    public void setPartTuStatus(String partTuStatus) {
+        this.partTuStatus = partTuStatus;
     }
 
     @Override

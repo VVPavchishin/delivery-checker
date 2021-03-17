@@ -21,18 +21,18 @@ public class ExcelService {
 
     private final TuFilesRepository tuFilesRepository;
     private final GdnFilesRepository gdnFilesRepository;
-    private final PartTuRepository partRepository;
+    private final PartTuRepository partTuRepository;
 
     private final ExcelHelper helper;
 
 
     public ExcelService(TuFilesRepository tuFilesRepository,
                         GdnFilesRepository gdnFilesRepository,
-                        PartTuRepository partRepository,
+                        PartTuRepository partTuRepository,
                         ExcelHelper helper) {
         this.tuFilesRepository = tuFilesRepository;
         this.gdnFilesRepository = gdnFilesRepository;
-        this.partRepository = partRepository;
+        this.partTuRepository = partTuRepository;
         this.helper = helper;
     }
     public List<TuFile> getAllTuFiles() {
@@ -57,5 +57,16 @@ public class ExcelService {
     public List<TuFile> findTuFilesByDate(String date) {
         List<TuFile> tuFileList = tuFilesRepository.findAllByFileTuDate(date);
         return tuFileList;
+    }
+
+    public TuFile findTuFileByName(String name) {
+        return tuFilesRepository.findByFileTuName(name);
+    }
+
+    public List<PartTuFiles> findAllByTuFileId(Long id) {
+        return partTuRepository.findAllByTuFileId(id);
+    }
+    public List<GdnFile> findAllByFileId(Long id){
+        return gdnFilesRepository.findAllByTuFileId(id);
     }
 }

@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface TuFilesRepository extends JpaRepository<TuFile, Long> {
     TuFile findByFileTuName(String fileTuName);
-
     List<TuFile> findAllByFileTuDate(String date);
 }

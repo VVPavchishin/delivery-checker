@@ -19,6 +19,9 @@ public class ExcelHelper {
     public final static String STATUS_ACTIVE = "ACTIVE";
     public final static String STATUS_PASSIVE = "DISACTIVE";
 
+    public final static String STATUS_EXPECTED = "EXPECTED";
+    public final static String STATUS_DELIVERED = "DELIVERED";
+
     private final TuFilesRepository tuFilesRepository;
     private final PartTuRepository partTuRepository;
 
@@ -53,7 +56,7 @@ public class ExcelHelper {
                     int quantityTu = (int) sheet.getRow(i).getCell(4).getNumericCellValue();
                     double priceTu = sheet.getRow(i).getCell(5).getNumericCellValue();
                     PartTuFiles partTuFiles = new PartTuFiles(codeTu, nameTu,
-                            docTu, quantityTu, priceTu);
+                            docTu, quantityTu, priceTu, STATUS_EXPECTED);
                     tuFile.setPartTuFile(partTuFiles);
                 }
                 fileList.add(tuFile);
@@ -67,11 +70,10 @@ public class ExcelHelper {
                 int rowQuantity = sheet.getLastRowNum();
                 double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
                 String fileTuName = sheet.getRow(11).getCell(2).getStringCellValue();
-                System.out.println("fileTuName - " + fileTuName);
 
-                GdnFile fileGdn = new GdnFile(orGdnName, fileGdnName,
-                        fileGdnDate, fileGdnPrice, tuFilesRepository.findByFileTuName(fileTuName));
-                fileList.add(fileGdn);
+                TuFile fileInGdn = tuFilesRepository.findByFileTuName(fileTuName);
+
+                GdnFile fileGdn = new GdnFile(orGdnName, fileGdnName, fileGdnDate, fileGdnPrice, fileInGdn);
 
                 int startRow = sheet.getFirstRowNum() + 19;
                 int lastRow = sheet.getLastRowNum() - 13;
@@ -87,7 +89,6 @@ public class ExcelHelper {
                             quantityGdnPart, priceGdnPart, placeGdnPart, dosGdnPart);
 
                     fileGdn.setPartGdnFile(partGdnFiles);
-
                 }
                 fileList.add(fileGdn);
                 return fileList;
