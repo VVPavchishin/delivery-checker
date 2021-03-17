@@ -158,8 +158,10 @@ hr {
     font-size: 12px;
 }
 #card_list_parts {
-    text-align: right;
-    margin-left: 25px;
     margin-top: 6.5rem;
-    width: 22rem;
+    text-align: right;
+    margin-left: 10px;
+}
+#table-parts {
+    margin-top: 6.5rem;
 }
