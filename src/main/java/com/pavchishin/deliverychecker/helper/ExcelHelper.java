@@ -67,12 +67,16 @@ public class ExcelHelper {
                 String fileGdnName = sheet.getRow(15).getCell(4).getStringCellValue();
                 String orGdnName = file.getOriginalFilename();
                 Date fileGdnDate = sheet.getRow(16).getCell(4).getDateCellValue();
-                int rowQuantity = sheet.getLastRowNum();
-                double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
                 String fileTuName = sheet.getRow(11).getCell(2).getStringCellValue();
 
-                TuFile fileInGdn = tuFilesRepository.findByFileTuName(fileTuName);
+                int rowQuantity = sheet.getLastRowNum();
+                double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
 
+                TuFile fileInGdn = tuFilesRepository.findByFileTuName(fileTuName);
+                if (fileInGdn != null) {
+                    List<PartTuFiles> partTuFiles = partTuRepository.findAllByTuFileId(fileInGdn.getId());
+                    System.out.println(partTuFiles);
+                }
                 GdnFile fileGdn = new GdnFile(orGdnName, fileGdnName, fileGdnDate, fileGdnPrice, fileInGdn);
 
                 int startRow = sheet.getFirstRowNum() + 19;
@@ -91,6 +95,7 @@ public class ExcelHelper {
                     fileGdn.setPartGdnFile(partGdnFiles);
                 }
                 fileList.add(fileGdn);
+
                 return fileList;
             }
         }

@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/delivery/user")
 public class UserController {
 
     private final UserRepository repository;
@@ -54,11 +54,11 @@ public class UserController {
             }
         }
         repository.save(user);
-        return "redirect:/user";
+        return "redirect:/delivery/user";
     }
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("userId") User user) {
         repository.delete(user);
-        return "redirect:/user";
+        return "redirect:/delivery/user";
     }
 }

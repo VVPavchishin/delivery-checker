@@ -13,7 +13,7 @@
                             <p class="card-text"><h4>${tFile.fileTuPrice?string(",##0.00;; roundingMode=halfEven")} UAN</h4>
                             <p class="card-text">${tFile.getFileTuDate()?datetime?string('dd-MM-yyyy')}</p>
                             <p class="card-text">${tFile.status}</p>
-                            <form action="/parts" method="post">
+                            <form action="/delivery/parts" method="post">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                                 <button class="btn btn-primary" name="tuName" value="${tFile.fileTuName}">Show</button>
                             </form>
@@ -46,7 +46,7 @@
     <div class="container-fluid fixed-bottom" style="margin-bottom: 5rem">
         <div class="row">
             <div class="col text-right">
-                <form class="form" method="post" enctype="multipart/form-data" action="index/refresh">
+                <form class="form" method="post" enctype="multipart/form-data" action="info/refresh">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <button class="tn btn-lg btn-success"
                             name="refresh" type="submit">REFRESH</button>

@@ -73,7 +73,7 @@
     <div class="container-fluid fixed-bottom" style="margin-bottom: 5rem">
         <div class="row">
             <div class="col text-right">
-                <form class="form" method="post" enctype="multipart/form-data" action="/back">
+                <form class="form" method="post" enctype="multipart/form-data" action="/delivery/parts/back">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <button class="btn btn-lg btn-success"
                             name="back" type="submit">RETURN</button>

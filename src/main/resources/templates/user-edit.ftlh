@@ -3,7 +3,7 @@
 <@co.page>
     <div class="container" style="margin-top: 5.5rem; margin-right: 10rem;">
         <h2>User editor</h2>
-        <form action="/user/edit" method="post">
+        <form action="/delivery/user/edit" method="post">
             <div class="col-auto">
                 <label>Name</label>
                 <input type="text" name="username" value="${user.username}">
