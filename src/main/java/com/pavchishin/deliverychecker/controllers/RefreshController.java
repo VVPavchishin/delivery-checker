@@ -36,7 +36,7 @@ public class RefreshController {
 
     }
 
-    @GetMapping("/index")
+    @GetMapping("/info")
     public String mainPage(@RequestParam(required = false) String filter, Map<String, Object> model){
         List<TuFile> tuFileList = service.getAllTuFiles();
         List<GdnFile> gdnFileList = service.getAllGdnFiles();
@@ -47,10 +47,10 @@ public class RefreshController {
 
         model.put("filesTu", tuFileList);
         model.put("filesGdn", gdnFileList);
-        return "/index";
+        return "info";
     }
 
-    @PostMapping("index/refresh")
+    @PostMapping("info/refresh")
     public String refreshList(Map<String, Object> model) throws IOException {
 
         Set<String> differenceTu;
@@ -97,7 +97,7 @@ public class RefreshController {
             model.put("filesGdn", service.getAllGdnFiles());
         }
 
-        return "redirect:/index";
+        return "redirect:/delivery/info";
     }
 
     private Set<MultipartFile> getMultipartFiles(Set<String> filesNames, String pathToFiles) throws IOException {

@@ -2,7 +2,7 @@
 <#import "login.ftlh" as lo>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top mb-3">
-    <a class="navbar-brand" href="/delivery"><img src="images/logo.png" alt="logo" style="height: 50px; width: 150px"></a>
+    <a class="navbar-brand" href="/delivery"><img src="/images/logo.png" alt="logo" style="height: 50px; width: 150px"></a>
     <button class="navbar-toggler" type="button" data-toggle="dropdown"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
