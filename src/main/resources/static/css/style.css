@@ -154,8 +154,11 @@ hr {
     font-size: 14px;
     font-weight: bold;
 }
-.table_body {
-    font-size: 12px;
+#success {
+    font-size: 11px;
+}
+#danger {
+    font-size: 11px;
 }
 #card_list_parts {
     margin-top: 6.5rem;

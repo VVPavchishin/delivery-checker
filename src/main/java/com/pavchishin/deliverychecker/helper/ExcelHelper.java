@@ -63,6 +63,7 @@ public class ExcelHelper {
                 return fileList;
             } else {
                 List<GdnFile> fileList = new ArrayList<>();
+                List<PartTuFiles> partTuFiles = null;
 
                 String fileGdnName = sheet.getRow(15).getCell(4).getStringCellValue();
                 String orGdnName = file.getOriginalFilename();
@@ -74,7 +75,7 @@ public class ExcelHelper {
 
                 TuFile fileInGdn = tuFilesRepository.findByFileTuName(fileTuName);
                 if (fileInGdn != null) {
-                    List<PartTuFiles> partTuFiles = partTuRepository.findAllByTuFileId(fileInGdn.getId());
+                    partTuFiles = partTuRepository.findAllByTuFileId(fileInGdn.getId());
                     System.out.println(partTuFiles);
                 }
                 GdnFile fileGdn = new GdnFile(orGdnName, fileGdnName, fileGdnDate, fileGdnPrice, fileInGdn);
@@ -91,6 +92,13 @@ public class ExcelHelper {
 
                     PartGdnFiles partGdnFiles = new PartGdnFiles(codeGdnPart, nameGdnPart,
                             quantityGdnPart, priceGdnPart, placeGdnPart, dosGdnPart);
+                    if (partTuFiles != null) {
+                        for (PartTuFiles files : partTuFiles) {
+                            if (files.getPartTuCode().equals(partGdnFiles.getPartGdnCode())) {
+                                files.setPartTuStatus(STATUS_DELIVERED);
+                            }
+                        }
+                    }
 
                     fileGdn.setPartGdnFile(partGdnFiles);
                 }
