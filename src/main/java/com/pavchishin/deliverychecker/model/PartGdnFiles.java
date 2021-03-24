@@ -24,13 +24,13 @@ public class PartGdnFiles {
     public PartGdnFiles() {}
 
     public PartGdnFiles(String partCode, String partName,
-                       int partQuantity, double partPrice, String partPlace, String partGdnDos) {
+                       int partQuantity, double partPrice, String partPlace) {
         this.partGdnCode = partCode;
         this.partGdnName = partName;
         this.partGdnQuantity = partQuantity;
         this.partGdnPrice = partPrice;
         this.partGdnPlace = partPlace;
-        this.partGdnDos = partGdnDos;
+
     }
 
     public long getId() {
@@ -92,7 +92,6 @@ public class PartGdnFiles {
     public String getPartGdnDos() {
         return partGdnDos;
     }
-
     public void setPartGdnDos(String partGdnDos) {
         this.partGdnDos = partGdnDos;
     }

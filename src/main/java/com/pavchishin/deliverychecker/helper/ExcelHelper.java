@@ -6,6 +6,8 @@ import com.pavchishin.deliverychecker.model.PartTuFiles;
 import com.pavchishin.deliverychecker.model.TuFile;
 import com.pavchishin.deliverychecker.repository.PartTuRepository;
 import com.pavchishin.deliverychecker.repository.TuFilesRepository;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -76,7 +78,6 @@ public class ExcelHelper {
                 TuFile fileInGdn = tuFilesRepository.findByFileTuName(fileTuName);
                 if (fileInGdn != null) {
                     partTuFiles = partTuRepository.findAllByTuFileId(fileInGdn.getId());
-                    System.out.println(partTuFiles);
                 }
                 GdnFile fileGdn = new GdnFile(orGdnName, fileGdnName, fileGdnDate, fileGdnPrice, fileInGdn);
 
@@ -88,10 +89,16 @@ public class ExcelHelper {
                     int quantityGdnPart = (int) sheet.getRow(i).getCell(4).getNumericCellValue();
                     double priceGdnPart = sheet.getRow(i).getCell(5).getNumericCellValue();
                     String placeGdnPart = sheet.getRow(i).getCell(7).getStringCellValue();
-                    String dosGdnPart = sheet.getRow(i).getCell(11).getStringCellValue();
+                    Cell dosGdnPart = sheet.getRow(i).getCell(11);
 
                     PartGdnFiles partGdnFiles = new PartGdnFiles(codeGdnPart, nameGdnPart,
-                            quantityGdnPart, priceGdnPart, placeGdnPart, dosGdnPart);
+                            quantityGdnPart, priceGdnPart, placeGdnPart);
+                    if (dosGdnPart.getStringCellValue().trim().isEmpty()) {
+                        partGdnFiles.setPartGdnDos("WAREHOUSE");
+                    } else {
+                        partGdnFiles.setPartGdnDos(dosGdnPart.getStringCellValue());
+                    }
+
                     if (partTuFiles != null) {
                         for (PartTuFiles files : partTuFiles) {
                             if (files.getPartTuCode().equals(partGdnFiles.getPartGdnCode())) {
@@ -99,11 +106,15 @@ public class ExcelHelper {
                             }
                         }
                     }
-
                     fileGdn.setPartGdnFile(partGdnFiles);
                 }
                 fileList.add(fileGdn);
 
+                if (partTuFiles != null) {
+                    if (partTuFiles.stream().allMatch(element -> element.getPartTuStatus().equals("DELIVERED"))) {
+                        fileInGdn.setStatus(STATUS_PASSIVE);
+                    }
+                }
                 return fileList;
             }
         }

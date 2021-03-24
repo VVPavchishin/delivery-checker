@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -68,5 +67,8 @@ public class ExcelService {
     }
     public List<GdnFile> findAllByFileId(Long id){
         return gdnFilesRepository.findAllByTuFileId(id);
+    }
+    public List<TuFile> getActiveFiles(String statusActive) {
+        return tuFilesRepository.findAllByStatus(statusActive, Sort.by(Sort.Direction.DESC, "fileTuName"));
     }
 }
