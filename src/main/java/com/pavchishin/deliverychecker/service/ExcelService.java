@@ -42,26 +42,20 @@ public class ExcelService {
     }
     public void saveTuFiles(Set<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<? extends TuFile> tUFiles = (List<? extends TuFile>) helper.addAllFiles(myFile, "TU");
+            List<TuFile> tUFiles = helper.addAllTuFiles(myFile);
             tuFilesRepository.saveAll(tUFiles);
         }
     }
     public void saveGdnFiles(Set<MultipartFile> files) throws IOException {
         for (MultipartFile myFile : files) {
-            List<? extends GdnFile> gdnFiles = (List<? extends GdnFile>) helper.addAllFiles(myFile, "GDN");
+            List<GdnFile> gdnFiles = helper.addAllGdnFiles(myFile);
             gdnFilesRepository.saveAll(gdnFiles);
         }
-    }
-
-    public List<TuFile> findTuFilesByDate(String date) {
-        List<TuFile> tuFileList = tuFilesRepository.findAllByFileTuDate(date);
-        return tuFileList;
     }
 
     public TuFile findTuFileByName(String name) {
         return tuFilesRepository.findByFileTuName(name);
     }
-
     public List<PartTuFiles> findAllByTuFileId(Long id) {
         return partTuRepository.findAllByTuFileId(id);
     }
