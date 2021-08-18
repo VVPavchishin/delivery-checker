@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PartTuRepository extends JpaRepository<PartTuFiles, Long> {
     List<PartTuFiles> findAllByTuFileId(long id);
+
+    List<PartTuFiles> findAllByPartTuStatus(String status);
 }

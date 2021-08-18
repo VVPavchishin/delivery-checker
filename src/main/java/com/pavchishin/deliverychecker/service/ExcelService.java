@@ -65,4 +65,8 @@ public class ExcelService {
     public List<TuFile> getActiveFiles(String statusActive) {
         return tuFilesRepository.findAllByStatus(statusActive, Sort.by(Sort.Direction.DESC, "fileTuName"));
     }
+
+    public List<PartTuFiles> findAllByStatus(String status) {
+        return partTuRepository.findAllByPartTuStatus(status);
+    }
 }

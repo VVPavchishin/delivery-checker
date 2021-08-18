@@ -24,10 +24,10 @@ public class RefreshController {
 
     //@Value("${path.tu.files.folder}")
     private final String PATH_TU_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\TuTest";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\Tu";
     //@Value("${path.gdn.files.folder}")
     private final String PATH_GDN_FOLDER =
-            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\GdnTest";
+            "C:\\Users\\User\\OneDrive - ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «САМІТ МОТОРЗ УКРАЇНА»\\Gdn";
     private final ExcelService service;
 
 
@@ -40,6 +40,7 @@ public class RefreshController {
     public String mainPage(@RequestParam(required = false) String filter, Map<String, Object> model){
         List<TuFile> tuFileList = service.getAllTuFiles();
         List<GdnFile> gdnFileList = service.getAllGdnFiles();
+        System.out.println(filter);
 //        if (filter != null && filter.isEmpty()) {
 //           List<TuFile> tuFiles = service.findTuFilesByDate(filter);
 //            System.out.println(tuFiles);
@@ -58,19 +59,16 @@ public class RefreshController {
         Set<MultipartFile> multipartTuFile;
         Set<MultipartFile> multipartGdnFile;
 
-        File [] listTuFiles = new File(PATH_TU_FOLDER).listFiles();
-        File [] listGdnFiles = new File(PATH_GDN_FOLDER).listFiles();
-
         List<TuFile> filesTuList = service.getAllTuFiles();
         List<GdnFile> filesGdnList = service.getAllGdnFiles();
 
-        Set<String> tuFileNameSetFolder = Arrays.stream(listTuFiles)
+        Set<String> tuFileNameSetFolder = Arrays.stream(new File(PATH_TU_FOLDER).listFiles())
                 .map(File::getName).collect(Collectors.toSet());
         Set<String> tuFileNameSetBase = filesTuList.stream()
                 .map(TuFile::getOriginalTuName).collect(Collectors.toSet());
 
 
-        Set<String> gdnFileNameSetFolder = Arrays.stream(listGdnFiles)
+        Set<String> gdnFileNameSetFolder = Arrays.stream(new File(PATH_GDN_FOLDER).listFiles())
                 .map(File::getName).collect(Collectors.toSet());
         Set<String> gdnFileNameSetBase = filesGdnList.stream()
                 .map(GdnFile::getOriginalGdnName).collect(Collectors.toSet());
@@ -96,7 +94,6 @@ public class RefreshController {
         } else {
             model.put("filesGdn", service.getAllGdnFiles());
         }
-
         return "redirect:/delivery/info";
     }
 

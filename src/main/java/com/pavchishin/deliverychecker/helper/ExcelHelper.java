@@ -67,7 +67,7 @@ public class ExcelHelper {
 
     public List<GdnFile> addAllGdnFiles (MultipartFile file) throws IOException {
 
-        try(XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
             List<GdnFile> fileList = new ArrayList<>();
             List<PartTuFiles> partTuFiles = null;
@@ -80,7 +80,12 @@ public class ExcelHelper {
             int rowQuantity = sheet.getLastRowNum();
             double fileGdnPrice = sheet.getRow(rowQuantity - 10).getCell(6).getNumericCellValue();
 
+            System.out.println(fileTuName + " " + orGdnName);
+
             TuFile fileInGdn = tuFilesRepository.findByFileTuName(fileTuName);
+
+            System.out.println(fileInGdn);
+
             if (fileInGdn != null) {
                 partTuFiles = partTuRepository.findAllByTuFileId(fileInGdn.getId());
             }

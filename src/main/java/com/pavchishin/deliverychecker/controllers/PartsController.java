@@ -41,10 +41,17 @@ public class PartsController {
 
         return "parts-list";
     }
+
+    @GetMapping("/all-parts")
+    public String showAllParts (Model model) {
+        model.addAttribute("expParts", service.findAllByStatus("EXPECTED"));
+        return "/expected-list";
+    }
+
     @PostMapping("/parts/back")
     public String returnBack(){
 
-        return "redirect:/delivery/info";
+        return "redirect:/delivery/active";
     }
 
 }
