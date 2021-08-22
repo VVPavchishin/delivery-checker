@@ -1,6 +1,6 @@
-<#include "security.ftlh">
+<#include "security-user.ftlh">
 <#macro login path>
-    <div class="sidenav">
+    <div id="login-page" class="sidenav">
         <div class="login-main-text">
             <h2>Delivery<br> Login Page</h2>
             <p>Login or register from here to access.</p>
@@ -31,7 +31,7 @@
 </#macro>
 
 <#macro logout>
-    <#if isAdmin>
+    <#if isMyUser>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-outline-success">Sign out</button>

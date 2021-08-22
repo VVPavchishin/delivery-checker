@@ -1,12 +1,11 @@
 <#import "parts/common.ftlh" as co>
 <#import "parts/leftside.ftlh" as ls>
 <@co.page>
-    <div class="container-fluid " style="margin-top: 6.5rem">
-        <div class="row">
+        <div class="row p-0 m-0">
             <@ls.leftside/>
-            <div class="col-md-5">
+            <div class="col-md-5 mt-3">
                 <#list filesTu as tFile>
-                    <div class="card text-right mb-3 ml-5" style="width: auto; height: 18rem;">
+                    <div class="card text-right mb-3" style="width: auto; height: 18rem;">
                         <div id="card-body" class="card-body text-white bg-dark">
                             <h5 class="card-title text-left">${tFile.fileTuName}</h5>
                             <hr style="color: aliceblue">
@@ -22,9 +21,9 @@
                 <#else>
                 </#list>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 mt-3">
                 <#list filesTu as tFile>
-                    <div class="container mb-3 ml-10" style="width: auto; height: 18rem;">
+                    <div class="container mb-3" style="width: auto; height: 18rem;">
                         <#list tFile.getGdnFiles() as gf>
                             <div class="card">
                                 <div id="card-body" class="card-body mb-2 text-white bg-dark">
@@ -42,7 +41,6 @@
                 </#list>
             </div>
         </div>
-    </div>
     <div class="container-fluid fixed-bottom" style="margin-bottom: 5rem">
         <div class="row">
             <div class="col text-right">

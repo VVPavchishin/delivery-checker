@@ -3,10 +3,10 @@
 <#assign count = 1>
 
 <@co.page>
-    <div class="row">
+    <div class="row p-0 m-0">
         <@ls.leftside/>
-        <div class="col-10">
-            <table class="table" style="margin-top: 5rem; margin-left: 1rem">
+        <div class="col mt-4 mr-4 mb-5">
+            <table class="table">
                 <thead class="thead-dark">
                 <tr>
                     <th class="table_label" scope="col">#</th>

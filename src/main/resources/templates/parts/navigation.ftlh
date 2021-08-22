@@ -1,7 +1,8 @@
+<#include "security-user.ftlh">
 <#include "security.ftlh">
 <#import "login.ftlh" as lo>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="/delivery"><img src="/images/logo.png" alt="logo" style="height: 50px; width: 150px"></a>
     <button class="navbar-toggler" type="button" data-toggle="dropdown"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -10,7 +11,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto"></ul>
-        <#if isAdmin>
+        <#if isMyUser>
             <form class="form-inline my-2 my-lg-0" method="get" action="/index">
                 <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

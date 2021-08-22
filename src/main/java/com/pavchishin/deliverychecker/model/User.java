@@ -36,6 +36,9 @@ public class User implements UserDetails {
     }
 
     public boolean isAdmin(){
+        return roles.contains(Role.ADMIN) ;
+    }
+    public boolean isMyUser(){
         return roles.contains(Role.ADMIN) || roles.contains(Role.MANAGER) || roles.contains(Role.USER);
     }
 

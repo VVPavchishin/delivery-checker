@@ -32,7 +32,7 @@
                 </div>
 
             </div>
-            <div id="table-parts" class="col-md-9 mb-5 offset-md-3 two">
+            <div id="table-parts" class="col-md-9 mb-5 mt-4 offset-md-3 two">
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
