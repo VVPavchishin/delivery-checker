@@ -28,6 +28,6 @@
 <footer class="bg-light text-center bg-dark fixed-bottom text-lg-start">
     <div class="text-center p-3 text-white">
         © 2021 Email:
-        <a class="text-white" href="https://mail.google.com">pavchishin.v@gmail.com</a>
+        <a class="text-white" href="#">pavchishin.v@gmail.com</a>
     </div>
 </footer>
